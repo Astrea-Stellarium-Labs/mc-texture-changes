@@ -1,7 +1,7 @@
 name: CI
 
 on:
-  deployment:
+  repository_dispatch:
     branches:
       - travis
 
