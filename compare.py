@@ -78,13 +78,13 @@ def diff_folders(new, old, type, delFolder=False):
                     deleted.append(src)
 
     for item in added:
-        save_diff(new, f"{type.capitalize()}s/{new}/added", item)
+        save_diff(new, f"/home/runner/work/mc-texture-changes/mc-texture-changes/{type.capitalize()}s/{new}/added", item)
 
     for item in changed:
-        save_diff(new, f"{type.capitalize()}s/{new}/changed", item)
+        save_diff(new, f"/home/runner/work/mc-texture-changes/mc-texture-changes/{type.capitalize()}s/{new}/changed", item)
 
     for item in deleted:
-        save_diff(new, f"{type.capitalize()}s/{old}/deleted", item)
+        save_diff(new, f"/home/runner/work/mc-texture-changes/mc-texture-changes/{type.capitalize()}s/{old}/deleted", item)
 
 
 def save_diff(base_folder, new_folder, item):
