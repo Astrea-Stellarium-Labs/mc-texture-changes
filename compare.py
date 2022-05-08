@@ -67,7 +67,6 @@ def diff_folders(new, old, type, delFolder=False):
         for name in files:
             src = os.path.join(root, name)
             if f"temp/{new}/assets/minecraft/textures/" in src:
-                print(src)
                 dest = src.replace(new, old, 1)
 
                 if delFolder == False:
@@ -99,7 +98,8 @@ def save_diff(base_folder, new_folder, item):
             raise
 
         os.makedirs(os.path.dirname(dest))
-        shutil.copy(src, dest)
+        e = shutil.copy(src, dest)
+        print(e)
 
 
 def main():
