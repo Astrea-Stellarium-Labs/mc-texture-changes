@@ -105,10 +105,12 @@ def main():
     release_type = sys.argv[1]
     number = int(sys.argv[2])
 
+    print("Getting files...")
     urls = get_urls(release_type, number)
     folders = save_temp(urls, release_type)
 
     for x in range(number):
+        print("Comparing folders...")
         diff_folders(folders[x], folders[x + 1], release_type)
 
 
