@@ -108,9 +108,9 @@ def main():
     print("Getting files...")
     urls = get_urls(release_type, number)
     folders = save_temp(urls, release_type)
-
+    print(folders)
+    
     for x in range(number):
-        print("Comparing folders...")
         diff_folders(folders[x], folders[x + 1], release_type)
 
 
