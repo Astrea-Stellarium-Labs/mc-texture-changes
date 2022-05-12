@@ -1,6 +1,8 @@
 name: Compare versions
 
 on:
+  schedule:
+  - cron: 0 0/8 * * *
   workflow_dispatch:
 
 jobs:
@@ -22,8 +24,8 @@ jobs:
 
       - name: Run
         run: |
-          python compare.py release 3
-          python compare.py snapshot 3
+          python compare.py release 2
+          python compare.py snapshot 2
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
