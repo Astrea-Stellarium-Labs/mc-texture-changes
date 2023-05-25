@@ -8,5 +8,5 @@ This is a up-to-date fork of [Kraineff's version](https://github.com/Kraineff/mc
 
 ## How it works
 
-You go to the Minecraft Website and see that there is a new version was released. This means that in a few seconds all changes will be in the GitHub Repository.
-If the new version of Minecraft contains any texture changes, a folder with the name of the version and subfolders (Added - new files, Changed - modified files, Deleted - deleted files) will appear. Otherwise, the folder will not be created.
+Every couple of hours, a script will be run comparing the latest Minecraft versions.
+If there is a new version and it contains any texture changes, a folder with the name of the version and subfolders (Added - new files, Changed - modified files, Deleted - deleted files) will appear. Otherwise, the folder will not be created.
