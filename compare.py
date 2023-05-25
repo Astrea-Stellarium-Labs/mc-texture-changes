@@ -80,7 +80,7 @@ def diff_folders(new: str, old: str, type: RELEASE_TYPES, delete_folder: bool = 
         save_diff(new, f"../{type.capitalize()}s/{old}/deleted", item)
 
 
-def save_diff(base_folder, new_folder, item):
+def save_diff(base_folder: str, new_folder: str, item: str):
     src = item
     dest = item.replace(f"{base_folder}/assets/minecraft/textures/", f"{new_folder}/")
 
