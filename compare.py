@@ -5,42 +5,37 @@ import requests
 import filecmp
 import shutil
 import errno
+import typing
+import orjson
 
 VERSIONS_JSON = "https://launchermeta.mojang.com/mc/game/version_manifest.json"
 
 
-def fetch_json(url):
+RELEASE_TYPES = typing.Literal["release", "snapshot"]
+
+def fetch_json(url: str):
     response = requests.get(url)
-    return response.json()
+    return orjson.loads(response.content)
 
 
-def get_urls(type, number):
+def get_urls(type: RELEASE_TYPES, number: int) -> list[str]:
     global VERSIONS_JSON
     urls = {}
 
     for item in fetch_json(VERSIONS_JSON)["versions"]:
         if len(urls) < (number + 1) and item["type"] == type:
-            if len(urls.keys()) != 0 and type == "release":
-                latest = list(urls.keys())[-1].split(".")[1]
-                current = item["id"].split(".")[1]
-                if current != latest:
-                    urls[item["id"]] = item["url"]
-            else:
-                urls[item["id"]] = item["url"]
+            urls[item["id"]] = item["url"]
 
-    return urls.values()
+    return list(urls.values())
 
 
-def save_temp(urls, type):
+def save_temp(urls: list[str]) -> list[str]:
     names = []
     if not os.path.exists("temp"):
         os.mkdir("temp")
 
     for url in urls:
-        if type == "release":
-            name = "1." + fetch_json(url)["id"].split(".")[1]
-        else:
-            name = fetch_json(url)["id"]
+        name = fetch_json(url)["id"]
         names.append(name)
 
         os.mkdir(f"temp/{name}")
@@ -54,22 +49,22 @@ def save_temp(urls, type):
     return names
 
 
-def diff_folders(new, old, type, delFolder=False):
+def diff_folders(new: str, old: str, type: RELEASE_TYPES, delete_folder: bool = False):
 
     added = []
     changed = []
     deleted = []
 
-    if delFolder == False:
-        diff_folders(old, new, type, True)
+    if not delete_folder:
+        diff_folders(old, new, type, delete_folder=True)
 
-    for root, dirs, files in os.walk(f"temp/{new}"):
+    for root, _, files in os.walk(f"temp/{new}"):
         for name in files:
             src = os.path.join(root, name)
             if f"temp/{new}/assets/minecraft/textures/" in src:
                 dest = src.replace(new, old, 1)
 
-                if delFolder == False:
+                if not delete_folder:
                     if not os.path.exists(dest):
                         added.append(src)
                     elif not filecmp.cmp(src, dest):
@@ -105,11 +100,18 @@ def main():
     release_type = sys.argv[1]
     number = int(sys.argv[2])
 
+    if release_type not in {"release", "snapshot"}:
+        print("Invalid release type")
+        return
+    
+    if typing.TYPE_CHECKING:
+        release_type = typing.cast(RELEASE_TYPES, release_type)
+
     print("Getting files...")
     urls = get_urls(release_type, number)
-    folders = save_temp(urls, release_type)
-    print(folders)
+    folders = save_temp(urls)
     
+    print("Comparing files...")
     for x in range(number):
         diff_folders(folders[x], folders[x + 1], release_type)
 
