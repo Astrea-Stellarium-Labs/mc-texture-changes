@@ -9,9 +9,8 @@ import typing
 import orjson
 
 VERSIONS_JSON = "https://launchermeta.mojang.com/mc/game/version_manifest.json"
-
-
 RELEASE_TYPES = typing.Literal["release", "snapshot"]
+
 
 def fetch_json(url: str):
     response = requests.get(url)
@@ -50,7 +49,6 @@ def save_temp(urls: list[str]) -> list[str]:
 
 
 def diff_folders(new: str, old: str, type: RELEASE_TYPES, delete_folder: bool = False):
-
     added = []
     changed = []
     deleted = []
@@ -103,14 +101,14 @@ def main():
     if release_type not in {"release", "snapshot"}:
         print("Invalid release type")
         return
-    
+
     if typing.TYPE_CHECKING:
         release_type = typing.cast(RELEASE_TYPES, release_type)
 
     print("Getting files...")
     urls = get_urls(release_type, number)
     folders = save_temp(urls)
-    
+
     print("Comparing files...")
     for x in range(number):
         diff_folders(folders[x], folders[x + 1], release_type)
