@@ -4,7 +4,7 @@
 
 This script will automatically download the client.jar and find the changes in textures with the previous version of Minecraft when a new version is released.
 
-This is a up-to-date fork of [Kraineff's version](https://github.com/Kraineff/mc-texture-changes), who seems to have abandoned their version.
+This is a up-to-date fork of [Kraineff's](https://github.com/kraineff) now deleted version. Note that the commit history of the old version has been saved here - [this commit](https://github.com/AstreaTSS/mc-texture-changes/commit/ed483337426258d46a78df08c2810e316585040e) was the last commit they authorized.
 
 ## How it works
 
