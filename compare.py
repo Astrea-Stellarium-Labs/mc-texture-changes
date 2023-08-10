@@ -1,7 +1,7 @@
 import os
 import sys
 import zipfile
-import requests
+import urllib.request
 import filecmp
 import shutil
 import errno
@@ -13,8 +13,8 @@ RELEASE_TYPES = typing.Literal["release", "snapshot"]
 
 
 def fetch_json(url: str):
-    response = requests.get(url)
-    return orjson.loads(response.content)
+    response = urllib.request.urlopen(url)
+    return orjson.loads(response.read())
 
 
 def get_urls(type: RELEASE_TYPES, number: int) -> list[str]:
@@ -39,7 +39,11 @@ def save_temp(urls: list[str]) -> list[str]:
 
         os.mkdir(f"temp/{name}")
         with open(f"temp/{name}.zip", "wb") as f:
-            f.write(requests.get(fetch_json(url)["downloads"]["client"]["url"]).content)
+            f.write(
+                urllib.request.urlopen(
+                    fetch_json(url)["downloads"]["client"]["url"]
+                ).read()
+            )
 
         zip_ref = zipfile.ZipFile(f"temp/{name}.zip", "r")
         zip_ref.extractall(f"temp/{name}")
